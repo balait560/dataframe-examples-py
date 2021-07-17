@@ -39,9 +39,8 @@ if __name__ == '__main__':
 
     finance_df = spark.read \
         .option("mode", "DROPMALFORMED") \
-        .option("header", "false") \
+        .option("header", "true") \
         .option("delimiter", ",") \
-        .option("inferSchema", "true") \
         .csv("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/cust_name.csv") \
 
 
