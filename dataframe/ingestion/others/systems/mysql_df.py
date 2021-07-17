@@ -29,7 +29,7 @@ if __name__ == '__main__':
     jdbc_params = {"url": ut.get_mysql_jdbc_url(app_secret),
                   "lowerBound": "1",
                   "upperBound": "100",
-                  "dbtable": app_conf["mysql_conf"]["dbtable"],
+                  ##"dbtable": app_conf["mysql_conf"]["dbtable"],
                   "numPartitions": "2",
                   "partitionColumn": app_conf["mysql_conf"]["partition_column"],
                   "user": app_secret["mysql_conf"]["username"],
@@ -39,12 +39,16 @@ if __name__ == '__main__':
 
     # use the ** operator/un-packer to treat a python dictionary as **kwargs
     print("\nReading data from MySQL DB using SparkSession.read.format(),")
-    txnDF = spark\
-        .read.format("jdbc")\
-        .option("driver", "com.mysql.cj.jdbc.Driver")\
-        .options(**jdbc_params)\
-        .load()
+    for query in app_conf["mysql_conf"]["Query_list"]:
+        jdbc_params['dbtable'] = query
+        print(query)
 
-    txnDF.show()
+        txnDF = spark\
+            .read.format("jdbc")\
+            .option("driver", "com.mysql.cj.jdbc.Driver")\
+            .options(**jdbc_params)\
+            .load()
+        txnDF.show()
+
 
 # spark-submit --packages "mysql:mysql-connector-java:8.0.15" dataframe/ingestion/others/systems/mysql_df.py

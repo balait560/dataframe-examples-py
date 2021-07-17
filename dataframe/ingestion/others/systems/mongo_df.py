@@ -29,7 +29,7 @@ if __name__ == '__main__':
         .read\
         .format("com.mongodb.spark.sql.DefaultSource")\
         .option("database", app_conf["mongodb_config"]["database"])\
-        .option("collection", app_conf["mongodb_config"]["collection"])\
+        .option("collection", app_conf["mongodb_config"]["collection"]) \
         .load()
 
     students.show()
